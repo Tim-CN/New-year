@@ -1,0 +1,419 @@
+<!DOCTYPE html>
+<html lang="zh">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.5, user-scalable=yes">
+    <title>丙午马年 · 新春大吉</title>
+    <style>
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+
+        body {
+            min-height: 100vh;
+            background: radial-gradient(circle at 10% 20%, #c44536, #7f1f1a);
+            background-attachment: fixed;
+            font-family: 'Segoe UI', 'Microsoft YaHei', 'PingFang SC', 'Hiragino Sans GB', 'WenQuanYi Micro Hei', sans-serif;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            padding: 1rem;
+            position: relative;
+            overflow-x: hidden;
+            color: #2c1b0f;
+        }
+
+        /* 金色闪粉背景点缀 */
+        body::before {
+            content: '';
+            position: absolute;
+            inset: 0;
+            background: url('data:image/svg+xml;utf8,<svg width="60" height="60" viewBox="0 0 60 60" xmlns="http://www.w3.org/2000/svg"><circle cx="10" cy="8" r="2" fill="%23ffd966" opacity="0.3"/><circle cx="42" cy="23" r="3" fill="%23ffd966" opacity="0.25"/><circle cx="55" cy="47" r="2.5" fill="%23ffd966" opacity="0.2"/><circle cx="5" cy="51" r="4" fill="%23ffd966" opacity="0.2"/><circle cx="33" cy="58" r="2" fill="%23ffb347" opacity="0.3"/><circle cx="48" cy="9" r="3" fill="%23ffb347" opacity="0.2"/></svg>');
+            background-size: 180px 180px;
+            pointer-events: none;
+            z-index: 0;
+        }
+
+        /* 主卡片 */
+        .newyear-card {
+            position: relative;
+            z-index: 10;
+            max-width: 880px;
+            width: 100%;
+            background: rgba(255, 250, 235, 0.2);
+            backdrop-filter: blur(16px) saturate(180%);
+            -webkit-backdrop-filter: blur(16px) saturate(180%);
+            border-radius: 56px 56px 48px 48px;
+            box-shadow: 0 30px 50px rgba(0, 0, 0, 0.5), 0 0 0 2px #f9e076 inset, 0 0 0 5px #b3432c inset;
+            padding: 2.5rem 1.8rem;
+            transition: all 0.2s ease;
+            border: 1px solid #f1c40f;
+        }
+
+        @media (max-width: 500px) {
+            .newyear-card {
+                padding: 2rem 1.2rem;
+                border-radius: 40px;
+            }
+        }
+
+        /* 灯笼装饰 (Emoji灯笼 + 动效) */
+        .lantern-emoji {
+            position: absolute;
+            font-size: 5rem;
+            line-height: 1;
+            filter: drop-shadow(0 10px 12px rgba(220, 20, 20, 0.6));
+            z-index: 5;
+            pointer-events: none;
+            user-select: none;
+            transform-origin: top center;
+            animation: swing 3s infinite alternate ease-in-out;
+        }
+
+        .lantern-left {
+            left: 1%;
+            top: 2%;
+            transform: rotate(-8deg);
+            animation: swing-left 3.2s infinite alternate;
+        }
+
+        .lantern-right {
+            right: 1%;
+            top: 3%;
+            transform: rotate(8deg);
+            animation: swing-right 2.8s infinite alternate;
+        }
+
+        @keyframes swing-left {
+            0% { transform: rotate(-10deg); }
+            100% { transform: rotate(2deg); }
+        }
+        @keyframes swing-right {
+            0% { transform: rotate(8deg); }
+            100% { transform: rotate(-4deg); }
+        }
+
+        /* 小马/金币漂浮装饰 */
+        .floating-coin {
+            position: absolute;
+            font-size: 2.2rem;
+            opacity: 0.5;
+            pointer-events: none;
+            z-index: 3;
+            animation: float 5s infinite linear;
+        }
+        .coin1 { left: 8%; bottom: 10%; animation-delay: 0s; }
+        .coin2 { right: 12%; top: 18%; animation-delay: 1s; }
+        .coin3 { left: 20%; top: 70%; animation-delay: 2.5s; }
+        .coin4 { right: 5%; bottom: 30%; animation-delay: 0.8s; }
+
+        @keyframes float {
+            0% { transform: translateY(0) rotate(0deg); }
+            50% { transform: translateY(-15px) rotate(8deg); }
+            100% { transform: translateY(0) rotate(0deg); }
+        }
+
+        /* 内容布局 */
+        .title-section {
+            text-align: center;
+            margin-bottom: 1.8rem;
+        }
+
+        .cny-en {
+            font-size: 1.2rem;
+            letter-spacing: 6px;
+            color: #f9eec1;
+            text-shadow: 2px 2px 0 #9b2c1d, 4px 4px 0 rgba(0,0,0,0.2);
+            margin-bottom: 0.3rem;
+            font-weight: 400;
+        }
+
+        .cny-main {
+            font-size: 4rem;
+            font-weight: 800;
+            color: #fddc7a;
+            text-shadow: 0 4px 0 #a32214, 0 8px 10px rgba(0,0,0,0.4);
+            line-height: 1.1;
+            margin-bottom: 0.5rem;
+        }
+        .cny-main small {
+            font-size: 2rem;
+            font-weight: 400;
+            text-shadow: 0 2px 0 #a32214;
+            display: inline-block;
+        }
+
+        .subtitle {
+            font-size: 1.3rem;
+            background: linear-gradient(145deg, #fcee9f, #f5bc6e);
+            -webkit-background-clip: text;
+            background-clip: text;
+            color: transparent;
+            font-weight: 600;
+            text-shadow: 1px 1px 0 #611e14;
+            margin-bottom: 0.8rem;
+        }
+
+        /* 倒福字区域 */
+        .fu-area {
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            margin: 1.2rem 0 2rem;
+        }
+
+        .fu-character {
+            font-size: 12rem;
+            line-height: 0.8;
+            font-weight: 800;
+            color: #fff3b8;
+            text-shadow: 0 4px 0 #b4301d, 0 10px 25px rgba(220, 20, 20, 0.7), 0 0 20px #ffb347;
+            transform: rotate(180deg);
+            display: inline-block;
+            transition: transform 0.2s, text-shadow 0.2s;
+            cursor: pointer;
+            user-select: none;
+            background: radial-gradient(circle at 30% 30%, #f3a72b, #bc2f1f);
+            -webkit-background-clip: text;
+            background-clip: text;
+            -webkit-text-stroke: 2px #a52a1a;
+            margin-bottom: 0.25rem;
+        }
+
+        .fu-character:active {
+            transform: rotate(180deg) scale(0.95);
+            text-shadow: 0 2px 0 #a52a1a, 0 5px 20px gold;
+        }
+
+        .fu-hint {
+            color: #ffcf9a;
+            font-size: 1.2rem;
+            background: rgba(120, 20, 10, 0.5);
+            padding: 0.3rem 1.8rem;
+            border-radius: 60px;
+            backdrop-filter: blur(4px);
+            border: 1px solid #eba45e;
+            font-weight: 400;
+            margin-top: 0.3rem;
+            letter-spacing: 2px;
+        }
+
+        /* 随机祝福展示条 */
+        .blessing-display {
+            background: rgba(60, 20, 10, 0.55);
+            backdrop-filter: blur(8px);
+            border: 2px solid #eeb76b;
+            border-radius: 80px;
+            padding: 1rem 1.8rem;
+            margin: 0 0 2.2rem 0;
+            font-size: 1.6rem;
+            text-align: center;
+            color: #fff8dd;
+            font-weight: 500;
+            box-shadow: 0 5px 0 #6b2b1b, 0 10px 18px rgba(0,0,0,0.3);
+            min-height: 5rem;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            word-break: break-word;
+        }
+
+        /* 祝福词云 (网格) */
+        .wish-grid {
+            display: grid;
+            grid-template-columns: repeat(2, 1fr);
+            gap: 1rem;
+            margin-bottom: 2.2rem;
+        }
+
+        .wish-item {
+            background: rgba(235, 170, 110, 0.35);
+            backdrop-filter: blur(6px);
+            border: 1px solid #f7d08a;
+            border-radius: 40px;
+            padding: 0.9rem 0.5rem;
+            text-align: center;
+            font-size: 1.45rem;
+            font-weight: 600;
+            color: #fff3cf;
+            text-shadow: 1px 1px 0 #722818;
+            box-shadow: 0 6px 0 #943a26, 0 8px 12px rgba(0,0,0,0.2);
+            transition: all 0.15s;
+            letter-spacing: 1px;
+        }
+
+        .wish-item:hover {
+            transform: translateY(-4px);
+            background: rgba(245, 190, 120, 0.6);
+            border-color: #f7c35c;
+            box-shadow: 0 10px 0 #943a26, 0 12px 18px black;
+        }
+
+        /* 马年特别icon + 落款 */
+        .footer-note {
+            display: flex;
+            align-items: center;
+            justify-content: space-between;
+            flex-wrap: wrap;
+            border-top: 2px dashed #ecac6f;
+            padding-top: 1.5rem;
+            margin-top: 0.5rem;
+            color: #f9eac3;
+            font-size: 1.3rem;
+            text-shadow: 1px 1px 0 #5d2a1b;
+        }
+
+        .horse-emoji {
+            font-size: 2.2rem;
+            filter: drop-shadow(0 2px 3px gold);
+            background: rgba(190, 70, 30, 0.5);
+            border-radius: 40px;
+            padding: 0.2rem 1.2rem;
+            border: 1px solid #f1c40f;
+        }
+
+        .greeting-small {
+            font-style: italic;
+            display: flex;
+            gap: 0.4rem;
+            align-items: center;
+        }
+
+        /* 点击提示动效 */
+        .shake {
+            animation: shake 0.4s ease;
+        }
+
+        @keyframes shake {
+            0% { transform: rotate(180deg) translateX(0); }
+            25% { transform: rotate(175deg) translateX(-6px); }
+            50% { transform: rotate(185deg) translateX(6px); }
+            75% { transform: rotate(175deg) translateX(-3px); }
+            100% { transform: rotate(180deg) translateX(0); }
+        }
+
+        /* 响应式调整 */
+        @media (max-width: 600px) {
+            .cny-main { font-size: 3rem; }
+            .fu-character { font-size: 8rem; }
+            .blessing-display { font-size: 1.3rem; padding: 0.8rem 1rem; }
+            .wish-item { font-size: 1.2rem; }
+            .lantern-emoji { font-size: 3.5rem; }
+        }
+    </style>
+</head>
+<body>
+    <!-- Emoji 灯笼（左右摇摆） -->
+    <div class="lantern-emoji lantern-left">🏮</div>
+    <div class="lantern-emoji lantern-right">🏮</div>
+
+    <!-- 漂浮小金币 / 元宝 / 小马（纯装饰） -->
+    <div class="floating-coin coin1">🐴</div>
+    <div class="floating-coin coin2">🧧</div>
+    <div class="floating-coin coin3">💰</div>
+    <div class="floating-coin coin4">✨</div>
+
+    <!-- 主卡片 -->
+    <main class="newyear-card">
+        <div class="title-section">
+            <div class="cny-en">HAPPY YEAR OF THE HORSE · 2026</div>
+            <h1 class="cny-main">新春快乐 <small>🐴</small></h1>
+            <div class="subtitle">丙午马年 · 正月初一</div>
+        </div>
+
+        <!-- 倒福区 & 交互核心 -->
+        <div class="fu-area">
+            <div class="fu-character" id="fuClick">福</div>
+            <span class="fu-hint">⬇️ 福到了 戳我 ⬇️</span>
+        </div>
+
+        <!-- 随机祝福动态显示 -->
+        <div class="blessing-display" id="blessingMessage">
+            点击倒福，抽取马年上上签
+        </div>
+
+        <!-- 四个经典祝福卡片 (马年特别版) -->
+        <div class="wish-grid">
+            <div class="wish-item">🐎 一马当先 · 步步高升</div>
+            <div class="wish-item">🌾 五谷丰登 · 金玉满堂</div>
+            <div class="wish-item">💪 龙马精神 · 身强体健</div>
+            <div class="wish-item">🧧 万马奔腾 · 财源广进</div>
+        </div>
+
+        <!-- 底部 + 马年元素 -->
+        <div class="footer-note">
+            <span class="horse-emoji">🐴 丙午大吉</span>
+            <span class="greeting-small">
+                <span>🧨 阖家安康</span>
+                <span>🎊 万事顺遂</span>
+            </span>
+        </div>
+    </main>
+
+    <script>
+        (function() {
+            // 祝福语库 (马年主题)
+            const blessings = [
+                "🐎 祝您龙马精神，身体安康，驰骋万里！",
+                "🏮 一马当先好运来，财源滚滚似江河！",
+                "✨ 愿您马到成功，事业一马平川！",
+                "💫 策马奔腾，前程似锦，马年行大运！",
+                "🌺 万马奔腾送福来，阖家欢乐永团圆！",
+                "🎋 快马加鞭追梦想，岁岁年年皆如意！",
+                "🍊 马年大吉，万事胜意，福暖四季！",
+                "🎉 金马银马不如您的平安宝马，祝您福寿安康！",
+                "🐎 丙午吉年，天马行空，创意无限，步步高升！",
+                "🧧 汗马功劳终有报，福禄双全喜盈门！"
+            ];
+
+            const fuElement = document.getElementById('fuClick');
+            const blessingDiv = document.getElementById('blessingMessage');
+
+            if (fuElement) {
+                fuElement.addEventListener('click', function(e) {
+                    // 随机选一条祝福
+                    const randomIndex = Math.floor(Math.random() * blessings.length);
+                    blessingDiv.textContent = blessings[randomIndex];
+
+                    // 添加小动画 (晃一下福字)
+                    fuElement.classList.add('shake');
+                    setTimeout(() => {
+                        fuElement.classList.remove('shake');
+                    }, 400);
+
+                    // 让祝福框微闪
+                    blessingDiv.style.transition = 'background 0.2s';
+                    blessingDiv.style.background = 'rgba(220, 120, 30, 0.7)';
+                    setTimeout(() => {
+                        blessingDiv.style.background = 'rgba(60, 20, 10, 0.55)';
+                    }, 200);
+                });
+            }
+
+            // 额外增加：鼠标滑过祝福网格也可爱 (但保留默认)
+            // 初始可放一条随机祝福在加载时 (可选)
+            // 不干扰用户首次点击，所以不自动填充，保留提示
+
+            // 加点喜庆：背景轻微闪烁 (已通过CSS达成)
+            // 检测是否是第一次点击? 无妨
+
+            // 动感灯笼——让摆动更生动(多方向)
+            // 已经在CSS里定义
+
+            // 禁止右键菜单 (单纯防止保存图片干扰，无伤大雅)
+            document.addEventListener('contextmenu', function(e) {
+                if (e.target.tagName === 'IMG') e.preventDefault();
+            });
+        })();
+    </script>
+
+    <!-- 额外样式微调，确保所有字在金色背景下可见 -->
+    <style>
+        /* 确保任何情况文字清晰 */
+        a, button { color: inherit; }
+        ::selection { background: #e6b422; color: #3e1c0e; }
+    </style>
+</body>
+</html>
