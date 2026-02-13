@@ -1,0 +1,424 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>📁 资源下载 · 丙午新春</title>
+    <!-- Font Awesome 6 图标库 -->
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0-beta3/css/all.min.css">
+    <style>
+        /* === 延续新春主题背景与装饰 (与之前完全一致) === */
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+            font-family: 'Segoe UI', 'PingFang SC', 'Microsoft YaHei', sans-serif;
+        }
+
+        body {
+            min-height: 100vh;
+            background: linear-gradient(145deg, #9f1f1f 0%, #c53a2b 40%, #e86334 100%);
+            background-attachment: fixed;
+            display: flex;
+            align-items: flex-start;
+            justify-content: center;
+            position: relative;
+            overflow-x: hidden;
+            padding: 2rem 1rem;
+        }
+
+        /* 灯笼装饰 */
+        .lantern-left, .lantern-right {
+            position: absolute;
+            top: 10px;
+            width: 80px;
+            height: 110px;
+            background: radial-gradient(circle at 30% 20%, #ffcf9a, #d4320f 70%);
+            border-radius: 50% 50% 40% 40%;
+            box-shadow: 0 8px 16px rgba(180, 30, 0, 0.4);
+            transform-origin: top center;
+            animation: swing 3.5s infinite ease-in-out;
+            z-index: 5;
+            opacity: 0.8;
+        }
+        .lantern-left { left: 5px; }
+        .lantern-right { right: 5px; animation-delay: 1.5s; }
+        .lantern-left::before, .lantern-right::before {
+            content: '';
+            position: absolute;
+            top: -10px;
+            left: 50%;
+            transform: translateX(-50%);
+            width: 16px;
+            height: 16px;
+            background: #c98b2b;
+            border-radius: 30% 30% 0 0;
+        }
+        .lantern-left::after, .lantern-right::after {
+            content: '福';
+            position: absolute;
+            bottom: 20px;
+            left: 50%;
+            transform: translateX(-50%);
+            font-size: 28px;
+            color: #fde58b;
+            text-shadow: 1px 1px 0 #b5451a;
+            font-family: 'KaiTi', serif;
+        }
+        @keyframes swing {
+            0% { transform: rotate(0deg); }
+            25% { transform: rotate(6deg); }
+            75% { transform: rotate(-6deg); }
+            100% { transform: rotate(0deg); }
+        }
+
+        /* 祥云背景 */
+        .cloud {
+            position: absolute;
+            background: rgba(255, 235, 150, 0.1);
+            border-radius: 80% 20% 70% 30% / 30% 70% 20% 80%;
+            width: 250px;
+            height: 100px;
+            filter: blur(8px);
+            z-index: 1;
+        }
+        .cloud1 { top: 5%; left: 0; }
+        .cloud2 { bottom: 5%; right: 0; width: 300px; height: 120px; }
+
+        /* 主容器 */
+        .resource-container {
+            position: relative;
+            z-index: 20;
+            width: 100%;
+            max-width: 1200px;
+            background: rgba(255, 245, 225, 0.85);
+            backdrop-filter: blur(10px);
+            -webkit-backdrop-filter: blur(10px);
+            border: 3px solid #f7d97e;
+            border-radius: 60px 60px 40px 40px;
+            box-shadow: 0 20px 30px rgba(160, 30, 0, 0.3), 0 0 0 2px #fcc15e inset;
+            padding: 2.5rem 2rem;
+        }
+
+        /* 头部区域 */
+        .page-header {
+            display: flex;
+            flex-wrap: wrap;
+            align-items: center;
+            justify-content: space-between;
+            margin-bottom: 2.5rem;
+            border-bottom: 2px dashed #f0702a;
+            padding-bottom: 1.5rem;
+        }
+        .title-section h1 {
+            font-size: 2.5rem;
+            color: #a3201a;
+            text-shadow: 2px 2px 0 #fee282;
+            letter-spacing: 2px;
+        }
+        .title-section .resource-badge {
+            background: #b33f1f;
+            color: #fef1bc;
+            padding: 0.3rem 1.5rem;
+            border-radius: 40px;
+            font-size: 1.3rem;
+            font-weight: 600;
+            display: inline-block;
+            margin-top: 0.5rem;
+            border: 2px solid #ffd97c;
+        }
+        .refresh-btn {
+            background: #fdc830;
+            border: 2px solid #aa401a;
+            color: #2f1406;
+            padding: 0.8rem 2rem;
+            font-size: 1.2rem;
+            font-weight: bold;
+            border-radius: 40px;
+            cursor: pointer;
+            box-shadow: 0 5px 0 #aa401a;
+            transition: 0.1s linear;
+            display: flex;
+            align-items: center;
+            gap: 8px;
+        }
+        .refresh-btn:active {
+            transform: translateY(4px);
+            box-shadow: 0 1px 0 #aa401a;
+        }
+
+        /* 卡片网格 */
+        .file-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fill, minmax(280px, 1fr));
+            gap: 1.8rem;
+            margin: 2rem 0 1rem;
+        }
+        .file-card {
+            background: white;
+            border-radius: 32px;
+            padding: 1.8rem 1.2rem 1.5rem 1.2rem;
+            box-shadow: 0 10px 15px rgba(170, 60, 20, 0.3), 0 4px 0 #c57746 inset, 0 -4px 0 #a84e2c inset;
+            border: 2px solid #f7b26a;
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            text-align: center;
+            transition: transform 0.15s;
+        }
+        .file-card:hover {
+            transform: translateY(-4px);
+            box-shadow: 0 14px 20px rgba(150, 40, 0, 0.4);
+        }
+
+        .file-icon {
+            font-size: 3.8rem;
+            line-height: 1;
+            margin-bottom: 0.8rem;
+            color: #b0451a;
+            filter: drop-shadow(2px 4px 4px rgba(190, 70, 0, 0.4));
+        }
+
+        .file-name {
+            font-size: 1.25rem;
+            font-weight: 700;
+            color: #2f1d0f;
+            word-break: break-word;
+            background: #fef7e9;
+            padding: 0.2rem 1rem;
+            border-radius: 30px;
+            width: 100%;
+            margin-bottom: 0.5rem;
+            border: 1px solid #f8b56c;
+        }
+
+        .file-type {
+            font-size: 1rem;
+            color: #87421f;
+            background: #fde7cf;
+            padding: 0.2rem 1.2rem;
+            border-radius: 30px;
+            margin: 0.3rem 0 1rem;
+            font-weight: 500;
+            display: inline-block;
+        }
+
+        .download-btn {
+            background: linear-gradient(145deg, #fdc830, #f37335);
+            border: 2px solid #fdea9e;
+            padding: 0.8rem 1.8rem;
+            font-size: 1.2rem;
+            font-weight: 700;
+            color: #2f1406;
+            border-radius: 40px;
+            box-shadow: 0 5px 0 #aa401a;
+            cursor: pointer;
+            transition: 0.05s linear;
+            text-decoration: none;
+            display: inline-flex;
+            align-items: center;
+            gap: 8px;
+            margin-top: 0.5rem;
+            width: fit-content;
+        }
+        .download-btn:active {
+            transform: translateY(4px);
+            box-shadow: 0 1px 0 #aa401a;
+        }
+        .download-btn i {
+            font-size: 1.2rem;
+        }
+
+        /* 加载/错误状态 */
+        .status-message {
+            text-align: center;
+            padding: 3rem;
+            background: rgba(255,255,240,0.7);
+            border-radius: 60px;
+            font-size: 1.3rem;
+            color: #772b1a;
+            margin: 2rem 0;
+        }
+        .status-message i {
+            font-size: 2.5rem;
+            display: block;
+            margin-bottom: 1rem;
+        }
+
+        .footer-hint {
+            text-align: center;
+            margin-top: 2rem;
+            color: #572818;
+            font-size: 1rem;
+            background: rgba(252, 208, 138, 0.5);
+            padding: 0.6rem 1.5rem;
+            border-radius: 40px;
+            border: 1px dashed #f0702a;
+            backdrop-filter: blur(2px);
+        }
+        .footer-hint a {
+            color: #a3201a;
+            font-weight: bold;
+            text-decoration: none;
+            border-bottom: 2px solid #f37335;
+        }
+    </style>
+</head>
+<body>
+    <!-- 装饰灯笼与祥云 -->
+    <div class="lantern-left"></div>
+    <div class="lantern-right"></div>
+    <div class="cloud cloud1"></div>
+    <div class="cloud cloud2"></div>
+
+    <main class="resource-container">
+        <!-- 头部：显示资源码和刷新按钮 -->
+        <div class="page-header">
+            <div class="title-section">
+                <h1>📂 资源下载</h1>
+                <div class="resource-badge" id="resourceCodeDisplay">—</div>
+            </div>
+            <button class="refresh-btn" id="refreshBtn"><i class="fas fa-sync-alt"></i> 刷新列表</button>
+        </div>
+
+        <!-- 卡片列表区域（动态渲染） -->
+        <div id="fileListContainer">
+            <div class="status-message" id="loadingMessage">
+                <i class="fas fa-spinner fa-pulse"></i> 正在读取资源清单...
+            </div>
+        </div>
+
+        <!-- 脚注提示 -->
+        <div class="footer-hint">
+            🧧 文件存放在 <strong>/资源码/Document/</strong> 目录下，需提供 <code>files.json</code> 描述文件列表。
+            <br><a href="../index.html"><i class="fas fa-arrow-left"></i> 返回激活界面</a>
+        </div>
+    </main>
+
+    <script>
+        (function() {
+            // --- 获取当前资源码 (从URL路径第一级) ---
+            function getResourceCode() {
+                const path = window.location.pathname;
+                const parts = path.split('/').filter(p => p !== '');
+                if (parts.length > 0 && parts[0] !== 'index.html') {
+                    return parts[0];
+                }
+                console.warn('无法从路径提取资源码，使用默认值');
+                return 'unknown';  // 避免空字符串
+            }
+
+            const resourceCode = getResourceCode();
+            document.getElementById('resourceCodeDisplay').innerText = `资源码: ${resourceCode}`;
+
+            // 容器
+            const container = document.getElementById('fileListContainer');
+
+            // 根据文件扩展名返回图标类
+            function getIconClass(extension) {
+                const ext = extension.toLowerCase();
+                const map = {
+                    'pdf': 'fa-file-pdf',
+                    'doc': 'fa-file-word', 'docx': 'fa-file-word',
+                    'xls': 'fa-file-excel', 'xlsx': 'fa-file-excel',
+                    'ppt': 'fa-file-powerpoint', 'pptx': 'fa-file-powerpoint',
+                    'txt': 'fa-file-lines',
+                    'jpg': 'fa-file-image', 'jpeg': 'fa-file-image', 'png': 'fa-file-image', 'gif': 'fa-file-image', 'bmp': 'fa-file-image',
+                    'zip': 'fa-file-zipper', 'rar': 'fa-file-zipper', '7z': 'fa-file-zipper', 'tar': 'fa-file-zipper',
+                    'mp4': 'fa-file-video', 'avi': 'fa-file-video', 'mov': 'fa-file-video', 'mkv': 'fa-file-video',
+                    'mp3': 'fa-file-audio', 'wav': 'fa-file-audio',
+                    'html': 'fa-file-code', 'css': 'fa-file-code', 'js': 'fa-file-code',
+                    'exe': 'fa-gear', 'dmg': 'fa-gear',
+                };
+                return map[ext] || 'fa-file';
+            }
+
+            function getExtension(filename) {
+                const dotIndex = filename.lastIndexOf('.');
+                return dotIndex !== -1 ? filename.slice(dotIndex + 1) : '';
+            }
+
+            // 生成卡片HTML (files: 数组，元素包含 name 和可选 type)
+            function renderFileCards(files) {
+                let gridHtml = '<div class="file-grid">';
+                files.forEach(file => {
+                    const fileName = file.name || '未命名文件';
+                    const ext = getExtension(fileName);
+                    const iconClass = getIconClass(ext);
+                    const displayType = file.type || (ext ? ext.toUpperCase() : '未知');
+                    const encodedFileName = encodeURIComponent(fileName);
+                    const downloadUrl = `/${resourceCode}/Document/${encodedFileName}`;
+
+                    gridHtml += `
+                        <div class="file-card">
+                            <div class="file-icon"><i class="fas ${iconClass}"></i></div>
+                            <div class="file-name" title="${fileName}">${fileName}</div>
+                            <span class="file-type">${displayType}</span>
+                            <a href="${downloadUrl}" class="download-btn" download="${fileName}" title="下载 ${fileName}">
+                                <i class="fas fa-download"></i> 下载
+                            </a>
+                        </div>
+                    `;
+                });
+                gridHtml += '</div>';
+                return gridHtml;
+            }
+
+            // 显示错误消息（替代之前的示例卡片）
+            function showErrorMessage() {
+                container.innerHTML = `
+                    <div class="status-message">
+                        <i class="fa-solid fa-circle-exclamation"></i>
+                        无法读取资源，可能是网络问题，请刷新重试
+                    </div>
+                `;
+            }
+
+            // 从 /资源码/Document/files.json 读取文件列表
+            async function loadFilesFromJson() {
+                // 显示加载中
+                container.innerHTML = `<div class="status-message"><i class="fas fa-spinner fa-pulse"></i> 正在读取资源清单...</div>`;
+
+                const jsonUrl = `/${resourceCode}/Document/files.json`;
+                try {
+                    const response = await fetch(jsonUrl, { cache: 'no-cache' });
+                    if (!response.ok) {
+                        // 任何 HTTP 错误（包括 404）都显示错误消息
+                        console.log('files.json 加载失败 (', response.status, ')');
+                        showErrorMessage();
+                        return;
+                    }
+
+                    const filesData = await response.json();
+                    // 验证是否为数组且长度大于0
+                    if (Array.isArray(filesData) && filesData.length > 0) {
+                        container.innerHTML = renderFileCards(filesData);
+                    } else {
+                        // 空数组或格式不正确也视为无法读取
+                        console.log('files.json 无效或为空');
+                        showErrorMessage();
+                    }
+                } catch (error) {
+                    console.error('加载文件列表异常:', error);
+                    showErrorMessage();
+                }
+            }
+
+            // 首次加载
+            loadFilesFromJson();
+
+            // 刷新按钮
+            document.getElementById('refreshBtn').addEventListener('click', function(e) {
+                e.preventDefault();
+                loadFilesFromJson();
+            });
+
+            // 如果资源码为unknown，可额外提示
+            if (resourceCode === 'unknown') {
+                const badge = document.getElementById('resourceCodeDisplay');
+                badge.innerText = '资源码未知';
+            }
+        })();
+    </script>
+</body>
+</html>
