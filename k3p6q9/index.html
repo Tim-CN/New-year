@@ -100,7 +100,7 @@
             padding: 2.5rem 2rem;
         }
 
-        /* 头部区域 */
+        /* 头部区域 - 简化，只保留标题和刷新按钮 */
         .page-header {
             display: flex;
             flex-wrap: wrap;
@@ -115,17 +115,6 @@
             color: #a3201a;
             text-shadow: 2px 2px 0 #fee282;
             letter-spacing: 2px;
-        }
-        .title-section .resource-badge {
-            background: #b33f1f;
-            color: #fef1bc;
-            padding: 0.3rem 1.5rem;
-            border-radius: 40px;
-            font-size: 1.3rem;
-            font-weight: 600;
-            display: inline-block;
-            margin-top: 0.5rem;
-            border: 2px solid #ffd97c;
         }
         .refresh-btn {
             background: #fdc830;
@@ -272,11 +261,10 @@
     <div class="cloud cloud2"></div>
 
     <main class="resource-container">
-        <!-- 头部：显示资源码和刷新按钮 -->
+        <!-- 头部：标题和刷新按钮 -->
         <div class="page-header">
             <div class="title-section">
                 <h1>📂 资源下载</h1>
-                <div class="resource-badge" id="resourceCodeDisplay">—</div>
             </div>
             <button class="refresh-btn" id="refreshBtn"><i class="fas fa-sync-alt"></i> 刷新列表</button>
         </div>
@@ -288,7 +276,7 @@
             </div>
         </div>
 
-        <!-- 脚注提示：仅保留返回激活界面链接 -->
+        <!-- 脚注提示：返回激活界面链接 -->
         <div class="footer-hint">
             <a href="../index.html"><i class="fas fa-arrow-left"></i> 返回激活界面</a>
         </div>
@@ -296,35 +284,6 @@
 
     <script>
         (function() {
-            // --- 修正资源码提取逻辑：支持子目录 (如 /New-year/资源码/) ---
-            function getResourceCode() {
-                // 获取当前页面的完整路径，例如 "/New-year/as89g6/index.html"
-                let path = window.location.pathname;
-
-                // 1. 去掉末尾的 index.html（如果存在）
-                if (path.endsWith('/')) {
-                    path = path.slice(0, -1); // 移除末尾斜杠方便处理
-                }
-                if (path.endsWith('/index.html')) {
-                    path = path.slice(0, -11); // 移除 "/index.html"
-                } else if (path.endsWith('index.html')) {
-                    path = path.slice(0, -10); // 移除 "index.html" (无前导斜杠情况)
-                }
-
-                // 2. 此时 path 应为类似 "/New-year/as89g6" 或 "/as89g6"
-                // 取最后一段作为资源码
-                const parts = path.split('/').filter(p => p !== '');
-                if (parts.length > 0) {
-                    return parts[parts.length - 1]; // 最后一段即为资源码
-                }
-                console.warn('无法从路径提取资源码，使用默认值');
-                return 'unknown';
-            }
-
-            const resourceCode = getResourceCode();
-            document.getElementById('resourceCodeDisplay').innerText = `资源码: ${resourceCode}`;
-
-            // 容器
             const container = document.getElementById('fileListContainer');
 
             // 根据文件扩展名返回图标类
@@ -351,7 +310,7 @@
                 return dotIndex !== -1 ? filename.slice(dotIndex + 1) : '';
             }
 
-            // 生成卡片HTML (files: 数组，元素包含 name 和可选 type)
+            // 生成卡片HTML
             function renderFileCards(files) {
                 let gridHtml = '<div class="file-grid">';
                 files.forEach(file => {
@@ -359,7 +318,6 @@
                     const ext = getExtension(fileName);
                     const iconClass = getIconClass(ext);
                     const displayType = file.type || (ext ? ext.toUpperCase() : '未知');
-                    // 使用相对路径：Document/文件名 (相对于当前目录)
                     const encodedFileName = encodeURIComponent(fileName);
                     const downloadUrl = `Document/${encodedFileName}`;
 
@@ -388,12 +346,11 @@
                 `;
             }
 
-            // 从 Document/files.json 读取文件列表 (相对路径)
+            // 从 Document/files.json 读取文件列表
             async function loadFilesFromJson() {
-                // 显示加载中
                 container.innerHTML = `<div class="status-message"><i class="fas fa-spinner fa-pulse"></i> 正在读取资源清单...</div>`;
 
-                const jsonUrl = `Document/files.json`;  // 相对路径
+                const jsonUrl = `Document/files.json`;
                 try {
                     const response = await fetch(jsonUrl, { cache: 'no-cache' });
                     if (!response.ok) {
@@ -423,12 +380,6 @@
                 e.preventDefault();
                 loadFilesFromJson();
             });
-
-            // 如果资源码为unknown，可额外提示
-            if (resourceCode === 'unknown') {
-                const badge = document.getElementById('resourceCodeDisplay');
-                badge.innerText = '资源码未知';
-            }
         })();
     </script>
 </body>
