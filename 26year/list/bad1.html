@@ -1,0 +1,358 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=yes">
+    <title>🐦 我鸟都不鸟你 · 丙午特别版</title>
+    <style>
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+            font-family: 'Segoe UI', 'PingFang SC', 'Microsoft YaHei', 'WenQuanYi Micro Hei', sans-serif;
+        }
+
+        body {
+            min-height: 100vh;
+            background: linear-gradient(145deg, #9f1f1f 0%, #c53a2b 40%, #e86334 100%);
+            background-attachment: fixed;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            position: relative;
+            overflow-x: hidden;
+            padding: 1rem;
+        }
+
+        /* 灯笼装饰 (原汁原味，只是把福字改成“鸟”字，见下方覆盖) */
+        .lantern-left, .lantern-right {
+            position: absolute;
+            top: 20px;
+            width: 100px;
+            height: 140px;
+            background: radial-gradient(circle at 30% 20%, #ffcf9a, #d4320f 70%);
+            border-radius: 50% 50% 40% 40%;
+            box-shadow: 0 10px 20px rgba(180, 30, 0, 0.5), inset -5px -10px 10px rgba(0,0,0,0.2);
+            transform-origin: top center;
+            animation: swing 3s infinite ease-in-out;
+            z-index: 5;
+        }
+        .lantern-left {
+            left: 10px;
+        }
+        .lantern-right {
+            right: 10px;
+            animation-delay: 1s;
+        }
+        .lantern-left::before, .lantern-right::before {
+            content: '';
+            position: absolute;
+            top: -12px;
+            left: 50%;
+            transform: translateX(-50%);
+            width: 20px;
+            height: 20px;
+            background: #c98b2b;
+            border-radius: 30% 30% 0 0;
+            box-shadow: 0 -2px 5px #ffb669;
+        }
+        /* 原灯笼显示“福”，现在覆盖成“鸟”——更契合主题，而且好笑 */
+        .lantern-left::after, .lantern-right::after {
+            content: '鸟' !important;
+            position: absolute;
+            bottom: 30px;
+            left: 50%;
+            transform: translateX(-50%);
+            font-size: 40px;
+            font-weight: bold;
+            color: #fde58b;
+            text-shadow: 2px 2px 0 #b5451a;
+            font-family: 'KaiTi', '楷体', serif;
+        }
+
+        @keyframes swing {
+            0% { transform: rotate(0deg); }
+            25% { transform: rotate(8deg); }
+            75% { transform: rotate(-8deg); }
+            100% { transform: rotate(0deg); }
+        }
+
+        /* 金色祥云纹 (背景装饰) */
+        .cloud {
+            position: absolute;
+            background: rgba(255, 235, 150, 0.15);
+            border-radius: 80% 20% 70% 30% / 30% 70% 20% 80%;
+            width: 200px;
+            height: 80px;
+            filter: blur(8px);
+            z-index: 1;
+        }
+        .cloud1 { top: 15%; left: 5%; }
+        .cloud2 { bottom: 10%; right: 3%; width: 280px; height: 100px; background: rgba(255, 200, 100, 0.1); }
+
+        /* 主卡片 */
+        .activate-card {
+            position: relative;
+            z-index: 20;
+            background: rgba(255, 250, 235, 0.9);
+            backdrop-filter: blur(12px);
+            -webkit-backdrop-filter: blur(12px);
+            border: 3px solid #f7d97e;
+            border-radius: 48px 48px 32px 32px;
+            box-shadow: 0 30px 40px rgba(160, 30, 0, 0.4), 0 0 0 2px #fcc15e inset, 0 0 0 5px #b33f1f inset;
+            padding: 2.5rem 2rem;
+            max-width: 520px;
+            width: 100%;
+            text-align: center;
+        }
+
+        /* 新年主标题 (现在用来展示“我鸟都不鸟你”) */
+        .newyear-title {
+            font-size: 2.6rem;
+            font-weight: 800;
+            color: #a3201a;
+            text-shadow: 3px 3px 0 #fee282, 5px 5px 0 rgba(255, 100, 0, 0.3);
+            letter-spacing: 4px;
+            margin-bottom: 0.2rem;
+            line-height: 1.2;
+            word-break: keep-all;
+        }
+        .newyear-sub {
+            font-size: 1.4rem;
+            font-weight: 400;
+            color: #cf4f2b;
+            background: #fef1bc;
+            display: inline-block;
+            padding: 0.3rem 2rem;
+            border-radius: 40px;
+            margin-bottom: 1.5rem;
+            box-shadow: 0 4px 0 #b7621a;
+            font-family: 'KaiTi', serif;
+        }
+
+        /* 提示信息区域 — 复用原样式，现在放傲娇语录 */
+        .message-area {
+            min-height: 3.2rem;
+            margin: 0.8rem 0 1.5rem;
+            font-size: 1rem;
+            font-weight: 500;
+            color: #b13b1a;
+            text-shadow: 0 1px 0 #ffd9a8;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+        }
+        .error-message {
+            color: #a5220c;
+            background: #ffdbac;
+            padding: 0.5rem 1.2rem;
+            border-radius: 40px;
+            border-left: 6px solid #c0451b;
+            font-weight: 600;
+        }
+        .success-message {
+            color: #1f7a3b;
+            background: #e1ffc6;
+            border-left: 6px solid #2e9c47;
+            padding: 0.5rem 1.2rem;
+            border-radius: 40px;
+        }
+        .info-message {
+            color: #7b4a2a;
+            background: #ffeec2;
+            padding: 0.5rem 1.2rem;
+            border-radius: 40px;
+        }
+
+        /* 激活按钮 — 现在用作“鸟都不鸟你”互动按钮 */
+        .activate-btn {
+            background: linear-gradient(145deg, #fdc830, #f37335);
+            border: none;
+            padding: 1.2rem 1.5rem;
+            width: 100%;
+            font-size: 2rem;
+            font-weight: 800;
+            color: #2f1406;
+            text-shadow: 2px 2px 0 #feda7a;
+            border-radius: 60px;
+            box-shadow: 0 10px 0 #aa401a, 0 6px 20px #ff8c42;
+            cursor: pointer;
+            transition: all 0.08s linear;
+            letter-spacing: 4px;
+            border: 2px solid #fdea9e;
+            transform: translateY(0);
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            gap: 8px;
+        }
+        .activate-btn:active {
+            transform: translateY(6px);
+            box-shadow: 0 4px 0 #aa401a, 0 10px 20px #ffb161;
+        }
+        .activate-btn i {
+            font-size: 2rem;
+            font-style: normal;
+            filter: drop-shadow(0 2px 2px #b3511c);
+        }
+
+        /* 底部示例 / 装饰提示 */
+        .demo-hint {
+            margin-top: 1.8rem;
+            color: #813f26;
+            font-size: 0.95rem;
+            background: rgba(252, 208, 138, 0.5);
+            padding: 0.6rem 1rem;
+            border-radius: 60px;
+            border: 1px dashed #f0702a;
+            backdrop-filter: blur(4px);
+        }
+        .demo-hint strong {
+            background: #fef7b6;
+            padding: 0.2rem 0.8rem;
+            border-radius: 30px;
+            margin: 0 4px;
+            font-family: monospace;
+            font-size: 1.2rem;
+            color: #b62b0c;
+        }
+
+        /* 小装饰 — 换成鸟/蛋符号 */
+        .coin {
+            position: absolute;
+            color: rgba(255, 215, 0, 0.3);
+            font-size: 2.5rem;
+            user-select: none;
+            z-index: 0;
+            transform: rotate(15deg);
+        }
+        .coin1 { top: 8%; left: 18%; }
+        .coin2 { bottom: 12%; right: 20%; transform: rotate(-10deg); }
+
+        /* 新增鸟蛋点缀（用来替换原来的元宝字符） */
+        .bird-emoji {
+            font-size: 2.2rem;
+            filter: drop-shadow(0 2px 4px rgba(0,0,0,0.2));
+        }
+    </style>
+    <!-- 覆盖灯笼文字已用 !important 完成，不用再额外写 -->
+</head>
+<body>
+    <!-- 灯笼 (已经用css把“福”改成“鸟”) -->
+    <div class="lantern-left"></div>
+    <div class="lantern-right"></div>
+    <!-- 背景祥云 -->
+    <div class="cloud cloud1"></div>
+    <div class="cloud cloud2"></div>
+    <!-- 小装饰：改成鸟类相关 🐦🥚 -->
+    <div class="coin coin1">🐦</div>
+    <div class="coin coin2">🥚</div>
+
+    <!-- 主卡片 — 内容完全重新构想，但UI一模一样 -->
+    <main class="activate-card">
+        <!-- 大标题：我鸟都不鸟你 -->
+        <h1 class="newyear-title">🐦 我鸟都不鸟你</h1>
+        <!-- 副标题：傲娇の新春 -->
+        <div class="newyear-sub">🙅 高冷模式 · 鸟你算我输</div>
+
+        <!-- 中间放一排嚣张的鸟（视觉焦点） -->
+        <div style="font-size: 4rem; line-height: 1.2; margin: 0.2rem 0 0.5rem; filter: drop-shadow(2px 4px 4px #b3511c);">
+            🐦 🦆 🦢
+        </div>
+
+        <!-- 消息框：用原生的 message-area 显示一句欠揍的话 -->
+        <div class="message-area" id="messageBox">
+            <span id="messageText" class="error-message" style="font-size: 1.3rem;">🙉 您已被拉入无视名单</span>
+        </div>
+
+        <!-- 巨型按钮，沿用激活按钮的样式，但功能是让你点着玩 -->
+        <button class="activate-btn" id="birdBtn" onclick="window.gu?.()  /* 先占位，下方重新定义 */">
+            <i>🐦</i> 鸟你一下 <i>🍗</i>
+        </button>
+
+        <!-- 底部调侃提示，保留demo-hint风格 -->
+        <div class="demo-hint">
+            💢 再按就飞走 ·  <strong>🐔咕咕</strong>  <strong>🦆嘎嘎</strong><br>
+            ⚡ ZZX鸟都不鸟你
+        </div>
+    </main>
+
+    <!-- 极简互动：让按钮每次点击都弹出傲娇提示，同时可以更换消息框文字 -->
+    <script>
+        (function() {
+            const birdBtn = document.getElementById('birdBtn');
+            const msgSpan = document.getElementById('messageText');
+            
+            // 用来切换消息的词库
+            const messages = [
+                '🦅 都说了不鸟你！',
+                '🐧 鸟你算我输，哼',
+                '🐦 走开走开，看不见',
+                '🦉 再烦我就飞走啦',
+                '🐤 咕咕嘎嘎也不鸟你',
+            ];
+            let index = 0;
+
+            // 绑定点击事件
+            birdBtn.addEventListener('click', function() {
+                // 随机换一个消息
+                const randomMsg = messages[Math.floor(Math.random() * messages.length)];
+                msgSpan.innerText = randomMsg;
+                // 随机切换消息框样式 (红/黄/绿 来回变，有趣)
+                msgSpan.classList.remove('error-message', 'success-message', 'info-message');
+                const rand = Math.floor(Math.random() * 3);
+                if (rand === 0) msgSpan.classList.add('error-message');
+                else if (rand === 1) msgSpan.classList.add('success-message');
+                else msgSpan.classList.add('info-message');
+
+                // 按钮抖动一下 (视觉反馈)
+                birdBtn.style.transform = 'translateY(4px)';
+                birdBtn.style.boxShadow = '0 4px 0 #aa401a, 0 10px 20px #ffb161';
+                setTimeout(() => {
+                    birdBtn.style.transform = '';
+                    birdBtn.style.boxShadow = '';
+                }, 120);
+
+                // 可选：弹个小窗（但为了不惹人烦，只改文字。如果一定要弹窗去掉下面注释）
+                const STORAGE_KEY = 'bird_miss_count';
+                // 获取当前未触发次数，默认为0
+                let missCount = parseInt(localStorage.getItem(STORAGE_KEY) || '0');
+                
+                // 1. 10% 概率随机触发
+                const isRandomTrigger = Math.random() < 0.1;
+                
+                // 2. 判断是否触发
+                if (isRandomTrigger) {
+                    alert('就不鸟你 😝');
+                    // 触发成功，重置计数
+                    localStorage.setItem(STORAGE_KEY, '0');
+                } else {
+                    // 随机未命中，检查保底
+                    if (missCount >= 15) {
+                        // 达到15次，强制触发
+                        alert('就不鸟你 😝');
+                        // 触发成功，重置计数
+                        localStorage.setItem(STORAGE_KEY, '0');
+                    } else {
+                        // 继续未触发，计数+1
+                        missCount++;
+                        localStorage.setItem(STORAGE_KEY, missCount);
+                        // 可选：如果不希望未触发时弹窗，可以注释掉下面这行
+                        // alert(`未触发，当前累计 ${missCount} 次 (还差 ${16 - missCount} 次必出)`);
+                    }
+                }
+                // --- 随机与保底逻辑结束 ---
+
+            });
+
+            // 额外效果：点击卡片任意位置也可以换一句（但仅限于好玩）
+            // 但为了不干扰按钮，不加了。
+
+            // 为了配合按钮上的 onclick 占位，我们定义 window.gu 但不使用，避免报错
+            window.gu = function() {};  // 空函数，确保onclick不会报错
+        })();
+    </script>
+
+    <!-- 注：原网页所有功能已被替换，仅保留喜庆的皮囊，内核变成了“我鸟都不鸟你” -->
+</body>
+</html>
